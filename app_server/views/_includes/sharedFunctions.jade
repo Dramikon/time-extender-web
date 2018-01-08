@@ -1,0 +1,14 @@
+mixin timeFromMinutes(mins)
+    - var h = mins / 60 >> 0 //for divide to int part only
+    - var d = h / 24 >> 0
+    - var m = mins - h * 60
+    - if(d > 0)
+        span &nbsp; #{d} days
+    - if(h > 0)
+        span &nbsp; #{h} hours
+    - if(m > 0)
+        span &nbsp; #{m} mins
+
+mixin today()
+    - var date = new Date().toDateString()
+        span= date

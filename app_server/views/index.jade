@@ -1,0 +1,70 @@
+extends layout
+
+include _includes/sharedFunctions
+//add ratings and achievements. add control 'is it a good day?' add achievements tab
+block content
+    .row
+        .col-lg-12
+        h1 What's going on today
+    .row
+        .col-xs-12.col-md-9
+            .error= message
+            .panel.panel-primary
+                .panel-heading
+                    h3
+                        button.btn.btn-secondary(onclick="updatePageByNextDate(-1)")
+                            span <
+                        input#calendar(type="date", value="#{date}", onchange="updatePageByNextDate(0)")
+                        button.btn.btn-secondary(onclick="updatePageByNextDate(1)")
+                            span >
+                        span
+                            &nbsp; Do you like this day?
+                        button.btn.btn-secondary
+                            span +
+                        button.btn.btn-secondary
+                            span -
+                .panel-body
+                    table.table.table-hover
+                        thead
+                            tr
+                                th Name
+                                th Type
+                                th Spent Time
+                                th Add Time
+                        tbody
+                            each item in timeLog
+                                tr
+                                    td= item.name
+                                    td= item.type
+                                    td
+                                        +timeFromMinutes(item.minutes)
+                                    td
+                                        input(id="inp#{item._id}", type="number", min="10", max="60", step="10", value="30")
+                                        button.btn.btn-primary(onclick="addMinutes('#{item._id}', #{item.minutes})")
+                                            span.glyphicon.glyphicon-plus
+                                        button.btn.btn-danger(onclick="deleteTimeRecord('#{item._id}')")
+                                            span.glyphicon.glyaphicon-minus
+                        tfoot
+                            tr
+                                th(colspan="3") Total Spent
+                                th
+                                    +timeFromMinutes(totalMinutes)
+        .col-xs-12.col-md-3
+            .panel.panel-success
+                .panel-heading
+                    h3.panel-heading Activities
+                .panel-body
+                    table.table.table-hover
+                        tbody
+                            each activity in activities
+                                tr
+                                    td
+                                        a(href="/activity/#{activity._id}")= activity.name
+                                    td
+                                        button.btn.btn-secondary(onclick="addActivityToLog('#{activity._id}')")
+                                            span +
+                    p
+                        input#newActivity.form-control(name="newActivity", type="text", placeholder="Activity Name" onchange="correctCreateLink(this.value)")
+                        a#newActivityLink.btn.btn-default(href="/activity/") Add New
+    script(src='/app_client/config.js')
+    script(src='/app_client/client.js')

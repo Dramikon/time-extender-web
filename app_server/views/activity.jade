@@ -1,0 +1,33 @@
+extends layout
+
+include _includes/sharedFunctions
+
+block content
+    .row.page-header
+        .col-lg-12
+            .error= message
+            .panel-success
+                h2.panel-heading= title
+    .row
+        .col-xs-12.col-md-6
+            - if(!activity._id || activity._id === 'undefined')
+            -   activity._id = '';
+            form.form-horizontal(action="/activity/create/#{activity._id}", method="post", role="form")
+                .form-group
+                    label.col-xs-10.col-sm-2.control-label(for="name") Name
+                    .col-xs-12.col-sm-10
+                        input#name.form-control(name="name", value="#{activity.name}")
+                .form-group
+                    label.col-xs-10.col-sm-2.control-label(for="type") Type
+                    .col-xs-12.col-sm-10
+                        input#type.form-control(name="type", value="#{activity.type}")
+                .form-group
+                    label.col-sm-2.control-label(for="description") Description
+                    .col-sm-10
+                        textarea#description.form-control(name="description", rows="3")=activity.description
+                .form-group
+                    label.col-xs-10.col-sm-2.control-label(for="time") Total Time
+                    .col-xs-12.col-sm-10
+                        label#time.control-label
+                            +timeFromMinutes(activity.totalMinutes)
+                button.btn.btn-default.pull-right Save Activity

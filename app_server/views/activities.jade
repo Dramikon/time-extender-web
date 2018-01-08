@@ -1,0 +1,42 @@
+extends layout
+
+include _includes/sharedFunctions
+
+block content
+    .row
+        .col-xs-12
+            .error= message
+            .panel-success
+                h2.panel-heading All Activities
+            .panel-body
+                table.table.table-hover
+                    thead
+                        tr
+                            th Name
+                            th Type
+                            th Description
+                            th Total time Spent
+                            th Actions
+                    tbody
+                        each activity in activities
+                            tr
+                                td
+                                    a(href="/activity/#{activity._id}")= activity.name
+                                td= activity.type
+                                td= activity.description
+                                td
+                                    +timeFromMinutes(activity.totalMinutes)
+                                td
+                                    button.btn.btn-primary
+                                        span.glyphicon.glyphicon-apple
+                                    button.btn.btn-danger
+                                        span.glyphicon.glyphicon-minus
+                    tfoot
+                        tr
+                            th(colspan="4") Total Spent
+                            th
+                                +timeFromMinutes(totalMinutes)
+                p
+                    input#newActivity.form-control(name="newActivity", type="text", placeholder="Activity Name" onchange="correctCreateLink(this.value)")
+                    a#newActivityLink.btn.btn-default(href="/activity/") Add New
+    script(src='/app_client/client.js')
